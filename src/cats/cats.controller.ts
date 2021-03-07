@@ -24,8 +24,31 @@ export class CatsController {
   // create new cat
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
-    this.catsService.create(createCatDto);
-    return `${createCatDto.name} is created`;
+    const generatedId = await this.catsService.create(createCatDto);
+    return { id: generatedId };
+  }
+
+  //find one cat
+  @Get(':id')
+  async findSingleCat(@Param('id') id: string): Promise<Cat> {
+    return this.catsService.findSingleCat(id);
+  }
+
+  // update cat infos
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body('name') name: string,
+    @Body('age') age: number,
+    @Body('breed') breed: string,
+  ) {
+    await this.catsService.updateCat(id, name, age, breed);
+    return `${id} is updated`;
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.catsService.delete(id);
   }
 
   /* @Get(':id')

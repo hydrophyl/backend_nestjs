@@ -9,24 +9,26 @@ import {
 } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
-import { Cat } from './interfaces/cat.interface';
+import { Cat } from './schemas/cat.schema';
 
 @Controller('cats')
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
+  // get all cats
   @Get()
   async findAll(): Promise<Cat[]> {
     return this.catsService.findAll();
   }
 
+  // create new cat
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
     return `${createCatDto.name} is created`;
   }
 
-  @Get(':id')
+  /* @Get(':id')
   async findOne(@Param('id') id: string): Promise<Cat> {
     return this.catsService.findOne(id);
   }
@@ -46,5 +48,5 @@ export class CatsController {
   ) {
     this.catsService.update(id, name, age, breed);
     return `${id} is updated`;
-  }
+  } */
 }
